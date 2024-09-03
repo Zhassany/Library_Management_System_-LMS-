@@ -27,8 +27,8 @@ class Book:
         else:
             raise ValueError("The isbn must contain only digit")
 
-    def __str__(self):
-        return f'title: {self.title}    author: {self.author}'
+    def __repr__(self):
+        return '\ntitle: %-20s    author: %-20s\n' % (self.title, self.author)
 
     def borrow(self):
         if self.available:
@@ -59,8 +59,8 @@ class Member:
         else:
             raise ValueError("The member's name must contain only letter and space")
 
-    def __str__(self):
-        return f'name: {self.name}    member_id: {self.member_id}'
+    def __repr__(self):
+        return '\nname: %-20s    member_id: %-20s\n' % (self.name, self.member_id)
     
     def borrow_book(self, book):
         if isinstance(book, Book):
