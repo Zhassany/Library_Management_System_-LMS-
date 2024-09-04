@@ -3,7 +3,7 @@ class Book:
         self.title = title
         self.author = author
         self.isbn = isbn
-        self.available = True
+        self.__available = True
     
     @property
     def author(self):
@@ -30,15 +30,15 @@ class Book:
     def __repr__(self):
         return '\ntitle: %-20s    author: %-20s\n' % (self.title, self.author)
 
-    def borrow(self):
-        if self.available:
-            self.available = False
+    def _borrow(self):
+        if self.__available:
+            self.__available = False
         else:
             raise AssertionError(f'{self.title} is not available') 
 
-    def return_book(self):
-        if not self.available:
-            self.available = True
+    def _return_book(self):
+        if not self.__available:
+            self.__available = True
         else:
             raise AssertionError(f'{self.title} is already available')
         
@@ -65,10 +65,10 @@ class Member:
     def borrow_book(self, book):
         if isinstance(book, Book):
             self.borrowed_books += [book]
-            book.borrow()
+            book._borrow()
         else:
             raise TypeError('The input of the borrow_book function must be an object of the Book class')
     
     def return_book(self, book):
         self.borrowed_books.remove(book)
-        book.return_book()
+        book._return_book()
