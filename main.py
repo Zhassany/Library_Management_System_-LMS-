@@ -14,7 +14,7 @@ class Book:
         if all(ch.isalpha() or ch.isspace() for ch in name):
             self.__author = name
         else:
-            raise ValueError("The author's name must contain only letter and space")
+            raise ValueError("author's name must contain only letter and space")
 
     @property
     def isbn(self):
@@ -25,7 +25,7 @@ class Book:
         if number.isdigit():
             self.__isbn = number
         else:
-            raise ValueError("The isbn must contain only digit")
+            raise ValueError("isbn must contain only digit")
 
     def __repr__(self):
         return '\ntitle: %-20s    author: %-20s\n' % (self.title, self.author)
@@ -57,7 +57,7 @@ class Member:
         if all(ch.isalpha() or ch.isspace() for ch in name_inp):
             self.__name = name_inp
         else:
-            raise ValueError("The member's name must contain only letter and space")
+            raise ValueError("member's name must contain only letter and space")
 
     def __repr__(self):
         return '\nname: %-20s    member_id: %-20s\n' % (self.name, self.member_id)
@@ -67,8 +67,67 @@ class Member:
             self.borrowed_books += [book]
             book._borrow()
         else:
-            raise TypeError('The input of the borrow_book function must be an object of the Book class')
+            raise TypeError('input of borrow_book function must be an object of Book class')
     
     def return_book(self, book):
         self.borrowed_books.remove(book)
         book._return_book()
+
+class Library:
+    def __init__(self):
+        self.books = []
+        self.members = []
+
+    def add_book(self, book):
+        if isinstance(book, Book):
+            self.books += [book]
+        else:
+            raise TypeError('input of add_book function must be an object of Book class')
+
+    def register_member(self, member):
+        if isinstance(member, Member):
+            self.members += [member]
+        else:
+            raise TypeError('input of register_member function must be an object of Member class')
+    
+    def issue_book(self, member_id, isbn):
+        memberIsExist = False
+        for member in self.members:
+            if member.member_id == member_id:
+                memberIsExist = True
+                break
+        
+        bookIsExist = False
+        for book in self.books:
+            if book.isbn == isbn:
+                bookIsExist = True
+                break
+        
+        if memberIsExist:
+            if bookIsExist:
+                member.borrow_book(book)
+            else:
+                raise AssertionError(f'{isbn} has not been added to the library')
+        else:
+            raise AssertionError(f'{member_id} has not been registered to the library')
+    
+    def return_book(self, member_id, isbn):
+        memberIsExist = False
+        for member in self.members:
+            if member.member_id == member_id:
+                memberIsExist = True
+                break
+        
+        bookIsExist = False
+        for book in self.books:
+            if book.isbn == isbn:
+                bookIsExist = True
+                break
+        
+        if memberIsExist:
+            if bookIsExist:
+                member.return_book(book)
+            else:
+                raise AssertionError(f'{isbn} not found')
+        else:
+            raise AssertionError(f'{member_id} not found')
