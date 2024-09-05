@@ -80,13 +80,19 @@ class Library:
 
     def add_book(self, book):
         if isinstance(book, Book):
-            self.books += [book]
+            if not (book.isbn in [x.isbn for x in self.books]):
+                self.books += [book]
+            else:
+                raise AssertionError('this book has already been added')
         else:
             raise TypeError('input of add_book function must be an object of Book class')
 
     def register_member(self, member):
         if isinstance(member, Member):
-            self.members += [member]
+            if not (member.member_id in [x.member_id for x in self.members]):
+                self.members += [member]
+            else:
+                raise AssertionError('this member has already been registered')
         else:
             raise TypeError('input of register_member function must be an object of Member class')
     
